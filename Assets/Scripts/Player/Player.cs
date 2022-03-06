@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using DG.Tweening;
 
-public class PlayerMovement : MonoBehaviour
+public class Player : MonoBehaviour
 {
+    [SerializeField] int _health;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashColdown;
@@ -12,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Camera _cam;
     float _moveS;
+    float xPosition;
+    float yPosition;
     Vector2 _movement;
     Vector2 _mousePos;
     private void Start()
@@ -48,8 +52,8 @@ public class PlayerMovement : MonoBehaviour
     private float time = 0f;
     private void Dash()
     {
-        var xPosition = _rigidbody.transform.position.x;
-        var yPosition = _rigidbody.transform.position.y;
+        xPosition = _rigidbody.transform.position.x;
+        yPosition = _rigidbody.transform.position.y;
         if (Time.time >= time)
         {
             _rigidbody.DOMove(new Vector2(xPosition + (_dashSpeed * _movement.x*_moveSpeed), yPosition + (_dashSpeed * _movement.y*_moveSpeed)), _dashDuration).SetEase(Ease.Linear); //ассет DOTween из assetstore
@@ -62,5 +66,23 @@ public class PlayerMovement : MonoBehaviour
         Vector2 lookDir = _mousePos - _rigidbody.position;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg + 0f;
         _rigidbody.rotation = angle;
+    }
+    
+
+    public void TakeDamage(int damage)
+    {
+        xPosition = _rigidbody.transform.position.x;
+        yPosition = _rigidbody.transform.position.y;
+        _health -= damage;
+        //_rigidbody.DOMove(new Vector2(xPosition, yPosition + (_dashSpeed * _moveSpeed)), _dashDuration).SetEase(Ease.Linear);
+        if (_health <= 0)
+        {
+            _health = 0;
+            Die();
+        }
+    }
+    void Die()
+    {
+        SceneManager.LoadScene(0);
     }
 }

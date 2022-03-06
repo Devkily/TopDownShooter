@@ -6,7 +6,6 @@ public class EnemyHealth : MonoBehaviour
 {
     [SerializeField] int _health;
     [SerializeField] GameObject _deathEffect;
-
     
     public void TakeDamage(int damage)
     {
