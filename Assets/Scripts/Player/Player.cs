@@ -6,13 +6,15 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] int _health;
+    public int _playerHealth;
+    public int _playerMaxHealth;
     [SerializeField] private float _moveSpeed = 5f;
     [SerializeField] private float _dashSpeed;
     [SerializeField] private float _dashColdown;
     [SerializeField] private float _dashDuration;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private Camera _cam;
+    [SerializeField] private HealthBar _healthBar;
     float _moveS;
     float xPosition;
     float yPosition;
@@ -21,6 +23,8 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _moveS = _moveSpeed;
+        _playerHealth = _playerMaxHealth;
+        _healthBar.SetMaxHealth(_playerMaxHealth);
     }
     
     void Update()
@@ -71,13 +75,11 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        xPosition = _rigidbody.transform.position.x;
-        yPosition = _rigidbody.transform.position.y;
-        _health -= damage;
-        //_rigidbody.DOMove(new Vector2(xPosition, yPosition + (_dashSpeed * _moveSpeed)), _dashDuration).SetEase(Ease.Linear);
-        if (_health <= 0)
+        _playerHealth -= damage;
+        _healthBar.SetHealth(_playerHealth);
+        if (_playerHealth <= 0)
         {
-            _health = 0;
+            _playerHealth = 0;
             Die();
         }
     }

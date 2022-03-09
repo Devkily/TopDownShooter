@@ -11,19 +11,22 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] string _playerTag = "Player";
     [SerializeField] float _attackSpeed;
     [SerializeField] int _attackDamage;
-    Vector2 _onDamageImpuls;
+    Transform _folow;
     private Player _playerHealth;
     Vector2 movement;
 
-    private void Start()
+    private void Awake()
     {
         _rb = GetComponent<Rigidbody2D>();
         _playerHealth = FindObjectOfType<Player>();
+        _player.GetComponent<Transform>();
     }
+
 
     private void Update()
     {
-        Vector3 direction = _player.position - transform.position;
+        _folow = _player.transform;
+        Vector3 direction = _folow.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         _rb.rotation = angle;
         direction.Normalize();
@@ -44,8 +47,8 @@ public class EnemyAI : MonoBehaviour
         {
             if (_playerHealth != null)
             {
-                Vector2 rigitx = _rb.transform.position;
-                _rb.transform.position = rigitx - movement*2;
+                Vector2 rigit = _rb.transform.position;
+                _rb.transform.position = rigit - movement*2;
                 _playerHealth.TakeDamage(_attackDamage);
                 time = Time.time + _attackSpeed;
             }
