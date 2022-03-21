@@ -25,12 +25,14 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
+
         _folow = _player.transform;
         Vector3 direction = _folow.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         _rb.rotation = angle;
         direction.Normalize();
         movement = direction;
+
     }
     private void FixedUpdate()
     {

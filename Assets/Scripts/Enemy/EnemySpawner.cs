@@ -11,12 +11,9 @@ public class EnemySpawner : MonoBehaviour
     //int xPos;
     //int yPos;
     float time;
-    private void Start()
-    {
-        
-    }
     private void Update()
     {
+
         if (time <= Time.time)
         {
             GameObject newEnemy = Instantiate(_prefab);
